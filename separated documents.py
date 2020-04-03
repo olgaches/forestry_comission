@@ -11,7 +11,7 @@ def create_separated_documents(filename):
         lines = json.load(hansard)
         pattern = '<.*?>'
         count = 0
-        for line in lines[0:5]:
+        for line in lines:
             count = count + 1
             if count % 10 == 0:
                 print count
@@ -19,14 +19,15 @@ def create_separated_documents(filename):
                 speaker = line['speaker']
                 gid = line['gid']
                 debate = line['body']
-                debate = debate.replace('<p>','')
-                debate = debate.replace('</p>', '')
-                debate = debate.replace('<br>', '')
-                debate = debate.replace('<br/>', '')
-                debate_updated = re.sub(pattern, '', debate)
-                output_file = os.path.join(my_dirpath, 'separated_documents/', str(gid) + '.txt')
-                output_descriptions = codecs.open(output_file, 'w', 'utf-8')
-                output_descriptions.writelines(debate_updated)
+                if 'landscape' in debate.lower():
+                    debate = debate.replace('<p>','')
+                    debate = debate.replace('</p>', '')
+                    debate = debate.replace('<br>', '')
+                    debate = debate.replace('<br/>', '')
+                    debate_updated = re.sub(pattern, '', debate)
+                    output_file = os.path.join(my_dirpath, 'separated_documents_landscape/', str(gid) + '.txt')
+                    output_descriptions = codecs.open(output_file, 'w', 'utf-8')
+                    output_descriptions.writelines(debate_updated)
             except:
                 print count
 

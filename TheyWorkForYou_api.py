@@ -9,7 +9,7 @@ twfy = TheyWorkForYou(api_key)
 
 my_dirpath = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/'
 
-output_file = os.path.join(my_dirpath, 'lords_test2.json')
+output_file = os.path.join(my_dirpath, 'commons_forestry_commission_speaker.json')
 output_descriptions = open(output_file, 'w')
 
 # Type 'Lords' or 'Commons'
@@ -19,10 +19,9 @@ count = 0
 while length_row > 0:
     page = page + 1
     print page
-    debates_list = twfy.api.getDebates(type='lords', search='Forestry Commission', page = page)
+    debates_list = twfy.api.getDebates(type='commons', search='Forestry Commission', page = page)
     length_row = len(debates_list['rows'])
     print length_row
-#person?, order?
     for row in debates_list['rows']:
         try:
             dictionary = {
@@ -33,15 +32,9 @@ while length_row > 0:
                 "body": row['body'],
                 "parent": row['parent']
             }
-
+            json_object = json.dumps(dictionary, indent=4)
+            output_descriptions.write(json_object)
         except:
-            dictionary = {
-                "gid": row['gid'],
-                "hdate": row['hdate'],
-                "listurl": row['listurl'],
-                "body": row['body'],
-                "parent": row['parent']
-            }
-        json_object = json.dumps(dictionary, indent = 4)
-        output_descriptions.write(json_object)
+            continue
+
 print count

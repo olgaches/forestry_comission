@@ -17,18 +17,21 @@ def extract_info(name_input, name_ouptut, attribute):
             if attribute == 'hdate':
                 try:
                     speaker = line['speaker']
+                    debate = line['body']
                     year = line[attribute][0:4]
+                    #if 'landscape' in debate.lower():
                     attribute_arr.append(year)
                 except:
                     count_nospeaker = count_nospeaker + 1
             elif attribute == 'speaker':
                 try:
                     speaker_info = line[attribute]
+                    debate = line['body']
+                    #if 'landscape' in debate.lower():
                     attribute_arr.append(speaker_info['party'])
                     all_speakers.append(speaker_info['name'])
                     count_speaker = count_speaker + 1
                 except:
-                    #print line
                     count_nospeaker = count_nospeaker + 1
 
         print count_nospeaker, count_speaker
@@ -45,6 +48,7 @@ def extract_info(name_input, name_ouptut, attribute):
         print 'median', np.median(all_counts_docs)
 
         print all_counts_docs
+        print len(all_counts_docs)
 
         x_labels_arr = []
         count_arr = []
@@ -56,16 +60,19 @@ def extract_info(name_input, name_ouptut, attribute):
         n_groups = len(count_arr)
         index = np.arange(n_groups)
 
-        # plt.ylim(0, 50)
-        # plt.xlim(-1, 102)
+        # plt.ylim(0, 6)
+        # plt.xlim(-1, 41)
+
+        # plt.ylim(0, 45)
+        # plt.xlim(-1, 103)
         plt.bar(index, count_arr, alpha=opacity, color='#4F97A3', align='center')
 
-        plt.xticks(index, x_labels_arr, fontsize=12, rotation=90)
+        plt.xticks(index, x_labels_arr, fontsize=5, rotation=90)
         plt.ylabel('Number of debates', fontsize=12)
         #plt.show()
         plt.savefig(os.path.join(my_dirpath, name_ouptut), bbox_inches="tight")
 
 
-to_plot = extract_info('commons_to_check_forestry_commission.json','results_commons_hdate.png','hdate')
+to_plot = extract_info('glaciers.json','results_commons_hdate_glaciers.png','hdate')
 
-#extract_info('commons_to_check_forestry_commission.json','results_commons_speaker.png','speaker')
+#extract_info('commons_to_check_forestry_commission.json','results_commons_speaker_landscape.png','speaker')

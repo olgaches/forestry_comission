@@ -6,6 +6,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
+import nltk
+from nltk.util import ngrams
+from nltk import word_tokenize
 
 
 class FeatureGen:
@@ -13,9 +16,12 @@ class FeatureGen:
     for example, feat = FeatureGen(perception_verbs = False)
     creates feature set without the turned off feature"""
 
-    def __init__(self, unigrams=True):
+    def __init__(self, unigrams=True, bigrams=True, length_description=True):
         self.unigrams = unigrams  # most common unigrams
-        self.vectorizer = CountVectorizer(analyzer="word", max_features=250)
+        self.bigrams = bigrams  # most common bigrams
+        self.length_description = length_description
+        self.vectorizer = CountVectorizer(analyzer="word", max_features=300)
+        self.vectorizer2 = CountVectorizer(analyzer="word", max_features=150)
 
     def find_common_unigrams(self, input):
         length = input.shape[0]
@@ -23,9 +29,10 @@ class FeatureGen:
         doc_unigr = []
         for i in range(0, length):
             tokens_input = input["unigrams"][i]
-            tokens_input = tokens_input.split(', ')
-            for ii in tokens_input:
-                doc_unigr.append(ii)
+            if len(tokens_input) > 20:
+                tokens_input = tokens_input.split(', ')
+                for ii in tokens_input:
+                    doc_unigr.append(ii)
 
         tokens_unigrams = []
         for i in doc_unigr:
@@ -52,32 +59,66 @@ class FeatureGen:
             else:
                 matrix_file.writelines(i)
 
+    def find_common_bigrams(self, input):
+        length = input.shape[0]
+
+        doc = []
+        for i in range(0, length):
+            tokens_input = input["unigrams"][i]
+            tokens_input = str(tokens_input)
+            tokens_input = tokens_input.replace('"', '')
+            tokens_input = tokens_input.replace("'", '')
+            tokens_input = tokens_input.replace(",", '')
+            token = nltk.word_tokenize(tokens_input)
+            # print token
+            for i in range(len(token) - 1):
+                bigram = [token[i]], [token[i + 1]]
+                bigram = str(bigram).replace('[', '')
+                bigram = str(bigram).replace(']', '')
+                bigram = str(bigram).replace(',', '')
+                bigram = str(bigram).replace("'", '')
+                # print bigram
+                doc.append(bigram)
+
+        self.common_bigram_matrix = self.vectorizer2.fit_transform(doc)
+        # self.common_bigram_matrix.toarray()
+
+        vocab_bigrams = self.vectorizer2.get_feature_names()
+        self.common_bigrams = vocab_bigrams
+
     def get_features(self, input):
         """This function creates a vector for every grid cell."""
 
         tokens = input["unigrams"]
 
-
         if self.unigrams:
             freq_unigrams = [[1 if word in comment else 0 for word in self.common_unigrams] for comment in tokens]
             freq_unigrams = np.array(freq_unigrams)
-            # freq_unigrams_sub = [[1 if word in comment else 0 for word in self.common_unigrams] for comment in tokens]
-            # freq_unigrams_sub = np.array(freq_unigrams_sub)
-            # freq_unigrams = []
-            # for elem_unigr in freq_unigrams_sub:
-            # result_unigr = sum(elem_unigr)
-            # freq_unigrams.append(result_unigr)
 
-        # return np.column_stack([freq_unigrams,freq_bigrams,verbs_percep,birds_percep,mammals_percep,transport_percep,highway_array,length_desc,year_array,aiello_features_percep])
+        if self.bigrams:
+            freq_bigrams = [[1 if word in comment else 0 for word in self.common_bigrams] for comment in tokens]
+            freq_bigrams = np.array(freq_bigrams)
+
+        if self.length_description:
+            length = input.shape[0]
+            length_desc = []
+            for i in range(0, length):
+                unigrams = input["unigrams"][i]
+                unigrams = unigrams.split(', ')
+                length_desc.append(len(unigrams))
+
+            length_desc = np.array(length_desc)
+
+        # return np.column_stack([freq_unigrams,freq_bigrams,length_desc])
         return np.column_stack(
-            [freq_unigrams])
+            [freq_unigrams, length_desc])
 
 
 start_time = time.clock()
 
 ## training and test data
-training_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/training.csv'
-test_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/test.csv'
+training_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/training_2classes.csv'
+test_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/test_2classes.csv'
 output_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/result_ML.csv'
 
 ## reading training data
@@ -88,9 +129,10 @@ train = pd.read_csv(training_data, header=0, \
 test = pd.read_csv(test_data, header=0, delimiter=";;", \
                    quoting=3)
 
-feat = FeatureGen(unigrams=True)
+feat = FeatureGen(unigrams=True, bigrams=False, length_description=True)
 
 feat.find_common_unigrams(train)
+feat.find_common_bigrams(train)
 
 ##feature extraction train
 train_data_features = feat.get_features(train)
@@ -140,7 +182,7 @@ my_input = pd.read_csv(input_file, sep=';')
 
 doc_unigrams = []
 for i in my_input:
-        doc_unigrams.append(i)
+    doc_unigrams.append(i)
 
 print len(doc_unigrams)
 print len(forest.feature_importances_)

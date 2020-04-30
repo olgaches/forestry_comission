@@ -5,11 +5,11 @@ import random
 my_dirpath = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/'
 filename_input = 'test_train.csv'
 
-output_file_test = os.path.join(my_dirpath, 'test.csv')
+output_file_test = os.path.join(my_dirpath, 'test_regression.csv')
 output_descriptions_test = open(output_file_test, 'w')
 output_descriptions_test.writelines('filename;;unigrams;;class\n')
 
-output_file_training = os.path.join(my_dirpath, 'training.csv')
+output_file_training = os.path.join(my_dirpath, 'training_regression.csv')
 output_descriptions_training = open(output_file_training, 'w')
 output_descriptions_training.writelines('filename;;unigrams;;class\n')
 
@@ -22,11 +22,22 @@ for i in range(0, length):
 
 selected_random = random.sample(all_files, length/2)
 
+#--------- classification-----------
+# for i in range(0, length):
+#     filename = input_text["filename"][i]
+#     unigrams = input_text["unigrams"][i]
+#     time_class = input_text["class"][i]
+#     if filename in selected_random:
+#         output_descriptions_test.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(time_class) + '\n')
+#     else:
+#         output_descriptions_training.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(time_class) + '\n')
+
+
+#--------------regression-----------
 for i in range(0, length):
     filename = input_text["filename"][i]
     unigrams = input_text["unigrams"][i]
-    time_class = input_text["class"][i]
     if filename in selected_random:
-        output_descriptions_test.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(time_class) + '\n')
+        output_descriptions_test.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(filename[0:4]) + '\n')
     else:
-        output_descriptions_training.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(time_class) + '\n')
+        output_descriptions_training.writelines(str(filename) + ';;' + str(unigrams) + ';;' + str(filename[0:4]) + '\n')

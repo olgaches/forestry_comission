@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-my_dirpath = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/'
+my_dirpath = ''
 
 def extract_info(name_input, name_ouptut, attribute):
     with open(os.path.join(my_dirpath, name_input), 'r') as hansard:

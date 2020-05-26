@@ -3,11 +3,11 @@ from twfy_python import TheyWorkForYou
 import os
 import json
 
-api_key = 'FeaWMyBR7XPMBCzL9sB8Mc6w'
+api_key = ''
 
 twfy = TheyWorkForYou(api_key)
 
-my_dirpath = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/'
+my_dirpath = ''
 
 output_file = os.path.join(my_dirpath, 'commons_forestry_commission_speaker.json')
 output_descriptions = open(output_file, 'w')

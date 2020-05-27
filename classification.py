@@ -48,7 +48,7 @@ class FeatureGen:
         # print count, tag
         self.common_unigrams = vocab_unigrams
 
-        matrix_file_path = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/matrix_labels.csv'
+        matrix_file_path = ''
         matrix_file = codecs.open(matrix_file_path, 'w', 'utf-8')
         self.common_unigrams = vocab_unigrams
         count = 0
@@ -117,9 +117,9 @@ class FeatureGen:
 start_time = time.clock()
 
 ## training and test data
-training_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/training_2classes.csv'
-test_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/test_2classes.csv'
-output_data = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/result_ML.csv'
+training_data = ''
+test_data = ''
+output_data = ''
 
 ## reading training data
 train = pd.read_csv(training_data, header=0, \
@@ -177,7 +177,7 @@ print 'f1', f1
 
 print 'time in seconds', time.clock() - start_time
 
-input_file = '//files.geo.uzh.ch/private/ochesnok/home/Documents/2_projects/12_hansard/results_api/matrix_labels.csv'
+input_file = ''
 my_input = pd.read_csv(input_file, sep=';')
 
 doc_unigrams = []

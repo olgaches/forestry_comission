@@ -20,6 +20,6 @@ Results of the manual annotation
 - **classification.py** (https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
 - **regression.py** (https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html)
 
-- **topic_modelling.py**
+- **topic_modelling.py** (https://radimrehurek.com/gensim/)
 - **results_20.csv** -- 20 topics in the Geograph data "geograph_forestry_comission_classified.csv"
 - **results_documents_20.csv** -- topics assigned to the Geograph documents

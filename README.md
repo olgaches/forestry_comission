@@ -8,7 +8,7 @@ Debates that contain the word 'landscape': **separated_documents_landscape.zip**
 
 ### Subsection "Pre-processing and encoding natural language as features":
 - **main.py** -- counts, frequencies, co-occurrence, MI
-- **my_functions.py**
+- **my_functions.py** (https://www.nltk.org/)
 - **NER.py** -- NER and dependency parsing using spaCy (https://spacy.io/)
 - **tfIdf.py** -- TF-IDF (https://radimrehurek.com/gensim/)
 

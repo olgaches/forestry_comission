@@ -10,7 +10,7 @@ Debates that contain the word 'landscape': **separated_documents_landscape.zip**
 - **main.py** -- counts, frequencies, co-occurrence, MI
 - **my_functions.py**
 - **NER.py** -- NER and dependency parsing using spaCy (https://spacy.io/)
-- **tfIdf.py** -- TF-IDF
+- **tfIdf.py** -- TF-IDF (https://radimrehurek.com/gensim/)
 
 ### Subsection "Classification":
 Results of the manual annotation

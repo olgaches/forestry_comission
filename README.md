@@ -1,6 +1,6 @@
 ### Data
 
-**TheyWorkForYou_api.py** -- access to the official written record of British parliamentary proceedings Hansard (https://hansard.parliament.uk/) through an API TheyWorkForYou (https://www.theyworkforyou.com/) implemented by the UK-based organisation mySociety (https://www.mysociety.org/).
+**TheyWorkForYou_api.py** -- access to the official written record of British parliamentary proceedings Hansard (https://hansard.parliament.uk/) through API TheyWorkForYou (https://www.theyworkforyou.com/) implemented by the UK-based organisation mySociety (https://www.mysociety.org/).
 
 The resulting file, when searching for 'Forestry Commission' in the debates of the House of Commons and the House of Lords: **commons_forestry_commission_speaker.json**
 
